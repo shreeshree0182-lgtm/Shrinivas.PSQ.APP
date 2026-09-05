@@ -9,6 +9,7 @@ import MasterRatesModal from "./components/MasterRatesModal.jsx";
 import { getStoredMasterRates, saveMasterRates, getRateForFinish } from "./data/finishMasterRates.ts";
 import { verifySupervisorPin } from "./data/supervisorPin.ts";
 import { serializeAndValidatePaintProJSON } from "./utils/paintShipSerializer";
+import { Home, ChevronDown, ChevronUp, Lock } from "lucide-react";
 
 // ── Master-rate sync: when a finish rate changes in Unlocked mode, persist it
 //    to the localStorage master so it becomes the new default everywhere.
@@ -5710,36 +5711,39 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
     return <button onClick={onClick}
       style={{width:"100%",display:"flex",alignItems:"center",justifyContent:"space-between",gap:10,
         padding:"10px 12px",borderRadius:12,cursor:"pointer",textAlign:"left",
-        border:`1.5px solid ${C.border}`,background:"#FAFAFA"}}>
+        border:"1px solid #E2E8F0",background:"#FFFFFF",boxShadow:"0 1px 2px rgba(0,0,0,0.03)"}}>
       <div style={{display:"flex",alignItems:"center",gap:8,minWidth:0}}>
         <span style={{fontSize:15,flexShrink:0}}>{icon}</span>
         <div style={{minWidth:0}}>
-          <div style={{fontSize:12,fontWeight:800,color:C.navy}}>{title}</div>
-          <div style={{fontSize:10,color:"#aaa",marginTop:1}}>{subtitle}</div>
+          <div style={{fontSize:12,fontWeight:800,color:"#0F172A"}}>{title}</div>
+          <div style={{fontSize:10,color:"#94A3B8",marginTop:1}}>{subtitle}</div>
         </div>
       </div>
       <div style={{display:"flex",alignItems:"center",gap:8,flexShrink:0}}>
-        <span style={{fontSize:10,fontWeight:700,color:C.gray,background:"#F1F5F9",borderRadius:20,padding:"3px 10px",whiteSpace:"nowrap"}}>{badge}</span>
-        <span style={{fontSize:11,color:"#aaa"}}>{open?"▲":"▼"}</span>
+        <span style={{fontSize:10,fontWeight:700,color:"#64748B",background:"#F1F5F9",borderRadius:20,padding:"3px 10px",whiteSpace:"nowrap"}}>{badge}</span>
+        {open ? <ChevronUp size={14} style={{color:"#94A3B8"}}/> : <ChevronDown size={14} style={{color:"#94A3B8"}}/>}
       </div>
     </button>;
   }
 
   return <div>
-    <div style={{background:C.blueL,borderRadius:10,padding:"7px 10px",marginBottom:10,fontSize:12,color:C.blue,fontWeight:600}}>
+    <div style={{background:"#EFF6FF",borderRadius:10,padding:"8px 12px",marginBottom:12,fontSize:12,color:"#1E40AF",fontWeight:600,display:"flex",alignItems:"center",gap:6}}>
+      <Home size={14} style={{color:"#1E40AF"}}/>
       Measure each elevation. Add wall sections, then deduct openings or add projections.
     </div>
 
     {/* Elevation tab selector */}
-    <div style={{display:"grid",gridTemplateColumns:`repeat(${elevations.length},1fr)`,gap:6,marginBottom:10}}>
+    <div style={{display:"grid",gridTemplateColumns:`repeat(${elevations.length},1fr)`,gap:8,marginBottom:12}}>
       {elevations.map(e=>{
         const active=e.id===currentElId;
         const eNet=elNet(e);
         return <button key={e.id} onClick={()=>setActiveElId(e.id)}
-          style={{padding:"8px 6px",minHeight:44,borderRadius:10,cursor:"pointer",textAlign:"center",
-            border:`1.5px solid ${active?C.orange:C.border}`,background:active?C.orangeL:C.white}}>
-          <div style={{fontSize:12,fontWeight:800,color:active?C.orange:C.navy}}>{EL_ICONS[e.name]||"🧱"} {e.name}</div>
-          <div style={{fontSize:10,fontWeight:700,color:active?C.orange:"#aaa",marginTop:2}}>{eNet.toFixed(1)} sf</div>
+          style={{padding:"10px 8px",minHeight:48,borderRadius:12,cursor:"pointer",textAlign:"center",
+            border:`1.5px solid ${active?"#0F1E3C":C.border}`,background:active?"#0F1E3C":"#FFFFFF",
+            boxShadow:active?"0 2px 8px rgba(15,30,60,0.15)":"0 1px 3px rgba(0,0,0,0.04)",
+            transition:"all 0.15s"}}>
+          <div style={{fontSize:12,fontWeight:800,color:active?"#FFFFFF":"#0F172A"}}>{EL_ICONS[e.name]||"🧱"} {e.name}</div>
+          <div style={{fontSize:10,fontWeight:700,color:active?"#E8A020":"#94A3B8",marginTop:2}}>{eNet.toFixed(1)} sf</div>
         </button>;
       })}
     </div>
@@ -5747,49 +5751,50 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
     {elevations.filter(el=>el.id===currentElId).map(el=>{
       const gross=elGross(el), ded=elDedTot(el), add=elAddTot(el), net=elNet(el);
       const secs=el.sections||[];
-      return <div key={el.id} style={{background:"#FAFAFA",borderRadius:14,padding:"12px",marginBottom:10,border:`1.5px solid ${C.border}`}}>
+      return <div key={el.id} style={{background:"#FFFFFF",borderRadius:12,padding:"16px",marginBottom:10,border:`1px solid ${C.border}`,boxShadow:"0 1px 3px rgba(0,0,0,0.04)"}}>
 
         {/* Elevation header */}
-        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:8}}>
-          <span style={{fontSize:18}}>{EL_ICONS[el.name]||"🧱"}</span>
-          <span style={{fontSize:14,fontWeight:800,color:C.navy}}>{el.name} Elevation</span>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+          <Home size={16} style={{color:"#0F1E3C"}}/>
+          <span style={{fontSize:14,fontWeight:800,color:"#0F172A"}}>{el.name} Elevation</span>
+          <span style={{fontSize:11,color:"#94A3B8",fontWeight:600,marginLeft:"auto"}}>Rough Area {gross.toFixed(0)} sf</span>
         </div>
 
         {/* Wall Sections */}
         <div style={{marginBottom:8}}>
-          <div style={{fontSize:10,fontWeight:700,color:C.gray,textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:6}}>Wall Sections</div>
+          <div style={{fontSize:10,fontWeight:700,color:"#64748B",textTransform:"uppercase",letterSpacing:"0.06em",marginBottom:8}}>Wall Sections</div>
           {secs.map((sec,si)=>{
             const secArea=(sec.w||0)*(sec.h||0);
-            return <div key={sec.id} style={{background:C.white,borderRadius:10,padding:"9px 11px",marginBottom:6,border:`1px solid ${C.orange}33`}}>
-              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:7}}>
+            return <div key={sec.id} style={{background:"#F8FAFC",borderRadius:10,padding:"10px 12px",marginBottom:8,border:"1px solid #E2E8F0"}}>
+              <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:8}}>
                 <div style={{display:"flex",alignItems:"center",gap:6,flex:1}}>
-                  <span style={{fontSize:11,fontWeight:700,color:C.orange,flexShrink:0}}>Section {si+1}</span>
+                  <span style={{fontSize:11,fontWeight:700,color:"#0F172A",flexShrink:0}}>Section {si+1}</span>
                   <input value={sec.label||""} onChange={e=>upSecLabel(el.id,sec.id,e.target.value)}
                     placeholder="Label (optional)"
-                    style={{fontSize:11,color:C.navy,border:`1px solid ${C.border}`,borderRadius:6,
-                      padding:"4px 8px",background:"#FAFAFA",outline:"none",minWidth:0,flex:1}}/>
+                    style={{fontSize:11,color:"#0F172A",border:"1px solid #E2E8F0",borderRadius:6,
+                      padding:"4px 8px",background:"#FFFFFF",outline:"none",minWidth:0,flex:1}}/>
                 </div>
                 <div style={{display:"flex",alignItems:"center",gap:6,flexShrink:0,marginLeft:8}}>
-                  <span style={{fontSize:11,fontWeight:700,color:C.orange}}>{secArea.toFixed(1)} sf</span>
+                  <span style={{fontSize:11,fontWeight:700,color:"#0F172A"}}>{secArea.toFixed(1)} sf</span>
                   {secs.length>1&&<button onClick={()=>remSec(el.id,sec.id)}
-                    style={{background:C.redL,border:"none",borderRadius:6,padding:"5px 10px",minHeight:30,color:C.red,cursor:"pointer",fontSize:11,fontWeight:700}}>✕</button>}
+                    style={{background:"#FEF2F2",border:"none",borderRadius:6,padding:"5px 10px",minHeight:30,color:"#DC2626",cursor:"pointer",fontSize:11,fontWeight:700}}>✕</button>}
                 </div>
               </div>
               <div style={{display:"grid",gridTemplateColumns:"1fr 18px 1fr",alignItems:"end",gap:9,marginBottom:6}}>
                 <div><span style={LBL}>Length (ft)</span><NumInp small value={sec.w} onChange={v=>upSec(el.id,sec.id,"w",v)}/></div>
-                <div style={{textAlign:"center",fontSize:16,color:"#ccc",fontWeight:700,paddingBottom:8}}>×</div>
+                <div style={{textAlign:"center",fontSize:16,color:"#CBD5E1",fontWeight:700,paddingBottom:8}}>×</div>
                 <div><span style={LBL}>Height (ft)</span><NumInp small value={sec.h} onChange={v=>upSec(el.id,sec.id,"h",v)}/></div>
               </div>
               {(!sec.w&&!sec.h)?null:
-                <div style={{display:"flex",justifyContent:"space-between",background:C.orangeL,borderRadius:7,padding:"5px 10px"}}>
-                  <span style={{fontSize:10,color:"#c97a40"}}>{sec.w||0} ft × {sec.h||0} ft</span>
-                  <span style={{fontSize:12,fontWeight:800,color:C.orange}}>{secArea.toFixed(2)} sqft</span>
+                <div style={{display:"flex",justifyContent:"space-between",background:"#EFF6FF",borderRadius:7,padding:"6px 10px",border:"1px solid #DBEAFE"}}>
+                  <span style={{fontSize:10,color:"#1E40AF"}}>{sec.w||0} ft × {sec.h||0} ft</span>
+                  <span style={{fontSize:12,fontWeight:800,color:"#1E40AF"}}>{secArea.toFixed(2)} sqft</span>
                 </div>}
             </div>;
           })}
           <button onClick={()=>addSec(el.id)}
             style={{width:"100%",padding:"10px 0",minHeight:44,borderRadius:10,fontSize:12,fontWeight:700,cursor:"pointer",
-              border:`1.5px dashed ${C.orange}`,background:C.orangeL,color:C.orange}}>
+              border:"1.5px dashed #CBD5E1",background:"#FFFFFF",color:"#64748B"}}>
             + Add Wall Section
           </button>
         </div>
@@ -5898,27 +5903,44 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
         </div>
 
         {/* Net total row */}
-        <div style={{background:C.orangeL,borderRadius:10,padding:"9px 14px",marginTop:10,
-          display:"flex",justifyContent:"space-between",alignItems:"center",border:`1px solid ${C.orange}33`}}>
-          <span style={{fontSize:12,color:"#c97a40",fontWeight:700}}>
+        <div style={{background:"#EFF6FF",borderRadius:10,padding:"10px 14px",marginTop:12,
+          display:"flex",justifyContent:"space-between",alignItems:"center",border:"1px solid #DBEAFE"}}>
+          <span style={{fontSize:12,color:"#1E40AF",fontWeight:700}}>
             {el.name} Net
             {(add>0||ded>0)&&<span style={{fontSize:10,fontWeight:400}}> = {gross.toFixed(1)}{add>0?` +${add.toFixed(1)}`:""}{ded>0?` −${ded.toFixed(1)}`:""}</span>}
           </span>
-          <span style={{fontSize:16,fontWeight:800,color:C.orange}}>{net.toFixed(2)} sqft</span>
+          <span style={{fontSize:16,fontWeight:800,color:"#1E40AF"}}>{net.toFixed(2)} sqft</span>
         </div>
 
       </div>;
     })}
 
-    {/* Total net strip */}
-    <div style={{background:C.navy,borderRadius:12,padding:"12px 16px",display:"flex",justifyContent:"space-between",alignItems:"center",marginTop:4}}>
-      <div>
-        <div style={{fontSize:10,color:"rgba(255,255,255,0.4)",fontWeight:700,letterSpacing:"0.06em"}}>NET EXTERIOR AREA</div>
-        <div style={{fontSize:10,color:"rgba(255,255,255,0.3)",marginTop:2}}>
-          {(elevations||[]).filter(e=>elNet(e)>0).map(e=>`${e.name}: ${elNet(e).toFixed(1)}`).join(" · ")}
+    {/* Total net summary — two-column card with soft blue accent */}
+    <div style={{background:"#EFF6FF",border:"1px solid #DBEAFE",borderRadius:16,padding:"20px",marginTop:8,display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+      {/* Left side: breakdown */}
+      <div style={{display:"flex",flexDirection:"column",gap:8}}>
+        <div style={{fontSize:10,color:"#64748B",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase"}}>Exterior Summary</div>
+        <div style={{display:"flex",alignItems:"center",gap:6}}>
+          <span style={{fontSize:11,color:"#64748B",fontWeight:600}}>Base Surface</span>
+          <span style={{fontSize:12,color:"#0F172A",fontWeight:800}}>Cement / Putty</span>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:6}}>
+          <span style={{fontSize:11,color:"#64748B",fontWeight:600}}>Paint System</span>
+          <span style={{fontSize:12,color:"#0F172A",fontWeight:800}}>2 Coats · 35-40 Microns</span>
+        </div>
+        <div style={{display:"flex",alignItems:"center",gap:6}}>
+          <span style={{fontSize:11,color:"#64748B",fontWeight:600}}>Finish Type</span>
+          <span style={{fontSize:12,color:"#0F172A",fontWeight:800}}>Textured</span>
         </div>
       </div>
-      <div style={{fontSize:22,fontWeight:900,color:C.orange}}>{totalNet.toFixed(1)} sf</div>
+      {/* Right side: brand + total */}
+      <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center",gap:6}}>
+        <div style={{fontSize:10,color:"#64748B",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase"}}>Net Exterior Area</div>
+        <div style={{fontSize:10,color:"#94A3B8",fontWeight:500,textAlign:"right"}}>
+          {(elevations||[]).filter(e=>elNet(e)>0).map(e=>`${e.name}: ${elNet(e).toFixed(1)}`).join(" · ")}
+        </div>
+        <div style={{fontSize:28,fontWeight:900,color:"#1E40AF",marginTop:4}}>{totalNet.toFixed(1)} sf</div>
+      </div>
     </div>
   </div>;
 }
