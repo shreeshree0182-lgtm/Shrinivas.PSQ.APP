@@ -38,7 +38,7 @@ export default function ExteriorFinishingModule({ finishing, onChange, net, rate
     </div>
 
     {/* ── Finish selection cards ── */}
-    <div style={{display:"grid",gridTemplateColumns:"repeat(3, 1fr)",gap:10,marginBottom:10}}>
+    <div style={{display:"grid",gridTemplateColumns:"repeat(2, 1fr)",gap:12,marginBottom:10}}>
       {entries.map(([key,cfg])=>{
         const f=finishing[key]||{};
         const types=cfg.types;
@@ -48,7 +48,7 @@ export default function ExteriorFinishingModule({ finishing, onChange, net, rate
         const Icon = ICON_MAP[key] || Paintbrush;
         return <button key={key} onClick={()=>{if(!f.on)upF(key,"on",true);tog(key);}} style={{
             textAlign:"left",cursor:"pointer",position:"relative",
-            borderRadius:12,padding:"14px 14px 12px",
+            borderRadius:12,padding:"10px 12px",
             border:`1.5px solid ${f.on?"#10B981":C.border}`,
             background:f.on?"#F0FDFA":"#FFFFFF",
             boxShadow:f.on?"0 2px 8px rgba(16,185,129,0.10)":"0 1px 3px rgba(0,0,0,0.04)",
@@ -66,8 +66,8 @@ export default function ExteriorFinishingModule({ finishing, onChange, net, rate
               background:C.white,border:`1.5px solid ${C.border}`,
               transition:"all 0.15s",
             }}/>}
-          <div style={{marginBottom:8,display:"flex",alignItems:"center",gap:6}}>
-            <Icon size={18} style={{color:f.on?"#10B981":"#94A3B8"}}/>
+          <div style={{marginBottom:6,display:"flex",alignItems:"center",gap:6}}>
+            <Icon size={16} style={{color:f.on?"#10B981":"#94A3B8"}}/>
           </div>
           <div style={{fontSize:12.5,fontWeight:800,color:f.on?"#0F172A":"#8B95A5",lineHeight:1.25,marginBottom:f.on?3:0}}>{cfg.label}</div>
           {f.on&&<div style={{fontSize:10,color:"#64748B",fontWeight:500,lineHeight:1.3}}>{selT?.label||""}</div>}
@@ -90,25 +90,25 @@ export default function ExteriorFinishingModule({ finishing, onChange, net, rate
         borderRadius:12,
         border:`1.5px solid #10B981`,
         background:C.white,
-        padding:"16px 18px",
-        marginBottom:10,
+        padding:"10px 12px",
+        marginBottom:8,
         boxShadow:"0 1px 4px rgba(0,0,0,0.04)",
       }}>
-        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:14}}>
-          <Icon size={16} style={{color:"#10B981"}}/>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
+          <Icon size={15} style={{color:"#10B981"}}/>
           <span style={{fontSize:12.5,fontWeight:800,color:C.navy}}>{cfg.label}</span>
         </div>
-        {types.length>0&&<DropSel label="Type / Variant" value={f.type||types[0]?.id} onChange={v=>changeType(key,v)} options={types.map(t=>({value:t.id,label:t.label+(t.base?` (${t.base==="water"?"Water":"Oil"}-based)`:"")})) } style={{marginBottom:12}}/>}
-        {f.type==="custom"&&<div style={{marginBottom:12}}><Inp label="Material Name" value={f.customName||""} onChange={v=>upF(key,"customName",v)} placeholder="Enter name..."/></div>}
-        {selT?.base&&<div style={{background:selT.base==="water"?"#EFF6FF":"#FFF7ED",borderRadius:10,padding:"7px 12px",marginBottom:12,fontSize:11,color:selT.base==="water"?C.blue:C.gold,fontWeight:600,display:"flex",alignItems:"center",gap:5}}>
+        {types.length>0&&<DropSel label="Type / Variant" value={f.type||types[0]?.id} onChange={v=>changeType(key,v)} options={types.map(t=>({value:t.id,label:t.label+(t.base?` (${t.base==="water"?"Water":"Oil"}-based)`:"")})) } style={{marginBottom:10}}/>}
+        {f.type==="custom"&&<div style={{marginBottom:10}}><Inp label="Material Name" value={f.customName||""} onChange={v=>upF(key,"customName",v)} placeholder="Enter name..."/></div>}
+        {selT?.base&&<div style={{background:selT.base==="water"?"#EFF6FF":"#FFF7ED",borderRadius:8,padding:"6px 10px",marginBottom:10,fontSize:11,color:selT.base==="water"?C.blue:C.gold,fontWeight:600,display:"flex",alignItems:"center",gap:5}}>
           {selT.base==="water"?<Droplets size={12}/>:"🛢"} {selT.base==="water"?"Water-Based":"Oil-Based"}
         </div>}
-        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
           <span style={{fontSize:11,color:C.gray,fontWeight:700}}>Area:</span>
-          {["Elevation Net","Custom"].map((lbl,i)=><button key={lbl} onClick={()=>upF(key,"useRoom",i===0)} style={{padding:"5px 12px",borderRadius:20,fontSize:11,fontWeight:700,border:`1.5px solid ${(i===0?f.useRoom:!f.useRoom)?C.navy:C.border}`,background:(i===0?f.useRoom:!f.useRoom)?C.navy:C.white,color:(i===0?f.useRoom:!f.useRoom)?"#fff":C.gray,cursor:"pointer"}}>{lbl}</button>)}
+          {["Elevation Net","Custom"].map((lbl,i)=><button key={lbl} onClick={()=>upF(key,"useRoom",i===0)} style={{padding:"4px 10px",borderRadius:20,fontSize:11,fontWeight:700,border:`1.5px solid ${(i===0?f.useRoom:!f.useRoom)?C.navy:C.border}`,background:(i===0?f.useRoom:!f.useRoom)?C.navy:C.white,color:(i===0?f.useRoom:!f.useRoom)?"#fff":C.gray,cursor:"pointer"}}>{lbl}</button>)}
         </div>
-        {!f.useRoom&&<div style={{marginBottom:12}}><span style={LBL}>Custom Area (sf)</span><NumInp small value={f.area||0} onChange={v=>upF(key,"area",v)}/></div>}
-        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:12}}>
+        {!f.useRoom&&<div style={{marginBottom:10}}><span style={LBL}>Custom Area (sf)</span><NumInp small value={f.area||0} onChange={v=>upF(key,"area",v)}/></div>}
+        <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:10}}>
           <div>
             <span style={LBL}>RATE (₹/sf){rateDisabled&&" 🔒"}</span>
             <div style={{position:"relative"}}>
@@ -118,9 +118,9 @@ export default function ExteriorFinishingModule({ finishing, onChange, net, rate
           </div>
           <div><span style={LBL}>COATS</span><CoatStepper value={f.coats||1} onChange={v=>upF(key,"coats",v)}/></div>
         </div>
-        <div style={{background:"#F0FDFA",borderRadius:10,padding:"10px 14px",marginTop:12,display:"flex",justifyContent:"space-between",alignItems:"center",border:`1px solid #10B98122`}}>
+        <div style={{background:"#F0FDFA",borderRadius:8,padding:"8px 12px",marginTop:10,display:"flex",justifyContent:"space-between",alignItems:"center",border:`1px solid #10B98122`}}>
           <span style={{fontSize:11,color:"#0D9488",fontWeight:600}}>{area.toFixed(1)} sf × ₹{f.rate||0} × {f.coats||1}</span>
-          <span style={{fontSize:16,fontWeight:800,color:"#0D9488"}}>₹{cost.toFixed(0)}</span>
+          <span style={{fontSize:15,fontWeight:800,color:"#0D9488"}}>₹{cost.toFixed(0)}</span>
         </div>
       </div>;
     })}

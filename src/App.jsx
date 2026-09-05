@@ -5751,10 +5751,10 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
     {elevations.filter(el=>el.id===currentElId).map(el=>{
       const gross=elGross(el), ded=elDedTot(el), add=elAddTot(el), net=elNet(el);
       const secs=el.sections||[];
-      return <div key={el.id} style={{background:"#FFFFFF",borderRadius:12,padding:"16px",marginBottom:10,border:`1px solid ${C.border}`,boxShadow:"0 1px 3px rgba(0,0,0,0.04)"}}>
+      return <div key={el.id} style={{background:"#FFFFFF",borderRadius:12,padding:"12px 14px",marginBottom:10,border:`1px solid ${C.border}`,boxShadow:"0 1px 3px rgba(0,0,0,0.04)"}}>
 
         {/* Elevation header */}
-        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:12}}>
+        <div style={{display:"flex",alignItems:"center",gap:8,marginBottom:10}}>
           <Home size={16} style={{color:"#0F1E3C"}}/>
           <span style={{fontSize:14,fontWeight:800,color:"#0F172A"}}>{el.name} Elevation</span>
           <span style={{fontSize:11,color:"#94A3B8",fontWeight:600,marginLeft:"auto"}}>Rough Area {gross.toFixed(0)} sf</span>
@@ -5800,7 +5800,7 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
         </div>
 
         {/* Advanced Adjustments (Additions + Deductions merged, collapsed by default) */}
-        <div style={{paddingTop:8}}>
+        <div style={{marginTop:8}}>
           <SectionHeader icon="⚙" title="Advanced Adjustments" subtitle="Additions and deductions"
             badge={`${(el.additions||[]).length} additions · ${(el.deductions||[]).length} deductions`}
             open={!!openAdj[el.id]} onClick={()=>setOpenAdj(p=>({...p,[el.id]:!p[el.id]}))}/>
@@ -5859,7 +5859,7 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
         </div>
 
         {/* Exterior Condition — Good/Fair/Poor + issue chips + notes + photos, collapsed by default */}
-        <div style={{paddingTop:8,marginTop:8}}>
+        <div style={{marginTop:8}}>
           {(()=>{
             const issueCount=(el.conditionIssues||[]).length;
             const photoCount=(el.conditionPhotos||[]).length;
@@ -5903,11 +5903,11 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
         </div>
 
         {/* Net total row */}
-        <div style={{background:"#EFF6FF",borderRadius:10,padding:"10px 14px",marginTop:12,
+        <div style={{background:"#EFF6FF",borderRadius:10,padding:"8px 12px",marginTop:10,
           display:"flex",justifyContent:"space-between",alignItems:"center",border:"1px solid #DBEAFE"}}>
           <span style={{fontSize:12,color:"#1E40AF",fontWeight:700}}>
             {el.name} Net
-            {(add>0||ded>0)&&<span style={{fontSize:10,fontWeight:400}}> = {gross.toFixed(1)}{add>0?` +${add.toFixed(1)}`:""}{ded>0?` −${ded.toFixed(1)}`:""}</span>}
+            {(add>0||ded>0)&&<span style={{fontSize:10,fontWeight:400,color:"#64748B"}}> = {gross.toFixed(1)}{add>0?` +${add.toFixed(1)}`:""}{ded>0?` −${ded.toFixed(1)}`:""}</span>}
           </span>
           <span style={{fontSize:16,fontWeight:800,color:"#1E40AF"}}>{net.toFixed(2)} sqft</span>
         </div>
@@ -5916,30 +5916,30 @@ function ExteriorModule({ elevations, onChange, config, onConfigChange, quoteMod
     })}
 
     {/* Total net summary — two-column card with soft blue accent */}
-    <div style={{background:"#EFF6FF",border:"1px solid #DBEAFE",borderRadius:16,padding:"20px",marginTop:8,display:"grid",gridTemplateColumns:"1fr 1fr",gap:20}}>
+    <div style={{background:"#EFF6FF",border:"1px solid #DBEAFE",borderRadius:14,padding:"14px 16px",marginTop:8,display:"grid",gridTemplateColumns:"1fr 1fr",gap:16}}>
       {/* Left side: breakdown */}
-      <div style={{display:"flex",flexDirection:"column",gap:8}}>
-        <div style={{fontSize:10,color:"#64748B",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase"}}>Exterior Summary</div>
-        <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <span style={{fontSize:11,color:"#64748B",fontWeight:600}}>Base Surface</span>
-          <span style={{fontSize:12,color:"#0F172A",fontWeight:800}}>Cement / Putty</span>
+      <div style={{display:"flex",flexDirection:"column",gap:6}}>
+        <div style={{fontSize:9,color:"#94A3B8",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase",marginBottom:2}}>Exterior Summary</div>
+        <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+          <span style={{fontSize:10,color:"#94A3B8",fontWeight:600,minWidth:72}}>Base Surface</span>
+          <span style={{fontSize:12,color:"#0F172A",fontWeight:700}}>Cement / Putty</span>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <span style={{fontSize:11,color:"#64748B",fontWeight:600}}>Paint System</span>
-          <span style={{fontSize:12,color:"#0F172A",fontWeight:800}}>2 Coats · 35-40 Microns</span>
+        <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+          <span style={{fontSize:10,color:"#94A3B8",fontWeight:600,minWidth:72}}>Paint System</span>
+          <span style={{fontSize:12,color:"#0F172A",fontWeight:700}}>2 Coats · 35-40 Microns</span>
         </div>
-        <div style={{display:"flex",alignItems:"center",gap:6}}>
-          <span style={{fontSize:11,color:"#64748B",fontWeight:600}}>Finish Type</span>
-          <span style={{fontSize:12,color:"#0F172A",fontWeight:800}}>Textured</span>
+        <div style={{display:"flex",alignItems:"baseline",gap:8}}>
+          <span style={{fontSize:10,color:"#94A3B8",fontWeight:600,minWidth:72}}>Finish Type</span>
+          <span style={{fontSize:12,color:"#0F172A",fontWeight:700}}>Textured</span>
         </div>
       </div>
       {/* Right side: brand + total */}
-      <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center",gap:6}}>
-        <div style={{fontSize:10,color:"#64748B",fontWeight:700,letterSpacing:"0.06em",textTransform:"uppercase"}}>Net Exterior Area</div>
-        <div style={{fontSize:10,color:"#94A3B8",fontWeight:500,textAlign:"right"}}>
+      <div style={{display:"flex",flexDirection:"column",alignItems:"flex-end",justifyContent:"center",gap:4}}>
+        <div style={{fontSize:9,color:"#94A3B8",fontWeight:700,letterSpacing:"0.08em",textTransform:"uppercase"}}>Net Exterior Area</div>
+        <div style={{fontSize:9,color:"#94A3B8",fontWeight:500,textAlign:"right"}}>
           {(elevations||[]).filter(e=>elNet(e)>0).map(e=>`${e.name}: ${elNet(e).toFixed(1)}`).join(" · ")}
         </div>
-        <div style={{fontSize:28,fontWeight:900,color:"#1E40AF",marginTop:4}}>{totalNet.toFixed(1)} sf</div>
+        <div style={{fontSize:26,fontWeight:900,color:"#1E40AF",marginTop:2}}>{totalNet.toFixed(1)} sf</div>
       </div>
     </div>
   </div>;
